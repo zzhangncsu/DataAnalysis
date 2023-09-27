@@ -22,9 +22,7 @@ def getAdsSeries(text):
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
-    # Can be used wherever a "file-like" object is accepted:
     df = pd.read_csv(uploaded_file)
-    # st.write(dataframe)
 
     all_date = sorted(df['day'].unique())
     df = df[df['utm_campaign_content'].notna()]
@@ -47,26 +45,56 @@ if uploaded_file is not None:
     for ads in ads_groups.groups:
         ads_dict[ads] = ads_groups.get_group(ads)['series'].unique()
 
-    document = Document()
-    document.add_heading('数据', 0)
+    tab1, tab2, tab3 = st.tabs(["文档", "统计", "图标"])
+    with tab1:
+        document = Document()
+        document.add_heading('数据', 0)
 
-    for ads in ads_groups.groups:
-        document.add_paragraph(f'{ads}, {len(ads_dict[ads])}个标签')
-        tags = ', '.join(ads_dict[ads])
-        document.add_paragraph(f'标签: {tags}')
-        if ads in df_focus['ads'].unique():
-            ads_focus = df_focus[df_focus['ads'] == ads]
-            for date in all_date:
-                if date in ads_focus['day'].unique():
-                    date_focus = ads_focus[ads_focus['day'] == date]
-                    value = []
-                    for idx, row in date_focus.iterrows():
-                        value.append(
-                            f"{row['series']}-{row['total_carts']}-{row['total_checkouts']}-{row['total_orders_placed']}")
+        for ads in ads_groups.groups:
+            if ads in df_focus['ads'].unique():
+                document.add_paragraph(f'{ads}, {len(ads_dict[ads])}个标签')
+                tags = ', '.join(ads_dict[ads])
+                document.add_paragraph(f'标签: {tags}')
+                ads_focus = df_focus[df_focus['ads'] == ads]
+                for date in all_date:
+                    if date in ads_focus['day'].unique():
+                        date_focus = ads_focus[ads_focus['day'] == date]
+                        value = []
+                        for idx, row in date_focus.iterrows():
+                            value.append(
+                                f"{row['series']}-{row['total_carts']}-{row['total_checkouts']}-{row['total_orders_placed']}")
 
-                    document.add_paragraph(f"{date}: {', '.join(value)}")
-        document.add_paragraph()
+                        document.add_paragraph(f"{date}: {', '.join(value)}")
+            document.add_paragraph()
 
-    file_stream = io.BytesIO()
-    document.save(file_stream)
-    st.download_button('下载', file_stream,file_name='data.docx')
+        file_stream = io.BytesIO()
+        document.save(file_stream)
+        st.download_button('下载', file_stream,file_name='data.docx')
+
+    with tab2:
+        aggre_dict = defaultdict(defaultdict)
+        for ads in ads_groups.groups:
+            aggre_dict[ads]['total_carts'] = ads_groups.get_group(ads)['total_carts'].sum()
+            aggre_dict[ads]['total_checkouts'] = ads_groups.get_group(ads)['total_checkouts'].sum()
+            aggre_dict[ads]['total_orders_placed'] = ads_groups.get_group(ads)['total_orders_placed'].sum()
+            aggre_dict[ads]['days'] = len(ads_groups.get_group(ads)['day'].unique())
+            aggre_dict[ads]['tags'] = ads_groups.get_group(ads)['series'].unique()
+        aggre_df = pd.DataFrame.from_dict(aggre_dict).T
+        st.dataframe(aggre_df)
+
+        option = st.selectbox(
+            '广告系列',aggre_df.index)
+
+        aggre_date_dict = defaultdict(lambda: defaultdict(dict))
+        for ads in ads_groups.groups:
+            ads_day_groups = ads_groups.get_group(ads).groupby('day')
+            for day in ads_day_groups.groups:
+                aggre_date_dict[ads][day]['total_carts'] = ads_day_groups.get_group(day)['total_carts'].sum()
+                aggre_date_dict[ads][day]['total_checkouts'] = ads_day_groups.get_group(day)['total_checkouts'].sum()
+                aggre_date_dict[ads][day]['total_orders_placed'] = ads_day_groups.get_group(day)[
+                    'total_orders_placed'].sum()
+        df_prod = pd.DataFrame.from_dict(aggre_date_dict[option]).T
+        st.dataframe(df_prod)
+
+        st.bar_chart(df_prod)
+
