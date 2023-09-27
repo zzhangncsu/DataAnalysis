@@ -5,6 +5,8 @@ import numpy as np
 import streamlit as st
 import pandas as pd
 from io import StringIO
+from docx import Document
+import io
 
 import urllib
 from collections import defaultdict
@@ -45,10 +47,13 @@ if uploaded_file is not None:
     for ads in ads_groups.groups:
         ads_dict[ads] = ads_groups.get_group(ads)['series'].unique()
 
+    document = Document()
+    document.add_heading('数据', 0)
+
     for ads in ads_groups.groups:
-        st.write(f'{ads}, {len(ads_dict[ads])}个标签')
-        tags = ','.join(ads_dict[ads])
-        st.write(f'标签: {tags}')
+        document.add_paragraph(f'{ads}, {len(ads_dict[ads])}个标签')
+        tags = ', '.join(ads_dict[ads])
+        document.add_paragraph(f'标签: {tags}')
         if ads in df_focus['ads'].unique():
             ads_focus = df_focus[df_focus['ads'] == ads]
             for date in all_date:
@@ -59,5 +64,9 @@ if uploaded_file is not None:
                         value.append(
                             f"{row['series']}-{row['total_carts']}-{row['total_checkouts']}-{row['total_orders_placed']}")
 
-                    st.write(f"{date}: {', '.join(value)}")
-        st.write('------------------------\n')
+                    document.add_paragraph(f"{date}: {', '.join(value)}")
+        document.add_paragraph()
+
+    file_stream = io.BytesIO()
+    document.save(file_stream)
+    st.download_button('下载', file_stream,file_name='data.docx')
