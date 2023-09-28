@@ -7,6 +7,7 @@ import pandas as pd
 from io import StringIO
 from docx import Document
 import io
+from docx.shared import RGBColor
 
 import urllib
 from collections import defaultdict
@@ -60,16 +61,25 @@ if uploaded_file is not None:
                     if date in ads_focus['day'].unique():
                         date_focus = ads_focus[ads_focus['day'] == date]
                         value = []
+                        date_focus = date_focus.sort_values(by=['total_orders_placed'], ascending=False)
+                        p = document.add_paragraph()
+                        p.add_run(f"{date}: ")
+                        count = 0
                         for idx, row in date_focus.iterrows():
-                            value.append(
-                                f"{row['series']}-{row['total_carts']}-{row['total_checkouts']}-{row['total_orders_placed']}")
+                            run = p.add_run(f"{row['series']}-{row['total_carts']}-{row['total_checkouts']}-{row['total_orders_placed']}")
+                            if row['total_orders_placed'] > 0:
+                                font = run.font
+                                font.color.rgb = RGBColor(10, 150, 10)
+                            if count != len(date_focus) - 1:
+                                p.add_run(", ")
+                            count += 1
+                document.add_paragraph()
 
-                        document.add_paragraph(f"{date}: {', '.join(value)}")
-            document.add_paragraph()
+        document.add_paragraph("^(*￣(oo)￣)^")
 
         file_stream = io.BytesIO()
         document.save(file_stream)
-        st.download_button('下载', file_stream,file_name='data.docx')
+        st.download_button('下载', file_stream, file_name='data.docx')
 
     with tab2:
         aggre_dict = defaultdict(defaultdict)
@@ -94,7 +104,13 @@ if uploaded_file is not None:
                 aggre_date_dict[ads][day]['total_orders_placed'] = ads_day_groups.get_group(day)[
                     'total_orders_placed'].sum()
         df_prod = pd.DataFrame.from_dict(aggre_date_dict[option]).T
-        st.dataframe(df_prod)
 
+        df_group_tag = ads_groups.get_group(option).groupby(['series']).sum(['total_carts', 'total_checkouts', 'total_orders_placed'])
+        df_group_tag.index.names = ['Tags']
+        st.dataframe(df_group_tag)
+        st.dataframe(df_prod)
+        #
         st.bar_chart(df_prod)
+    with tab3:
+        st.image("https://cdn.midjourney.com/1eea2b76-9e24-4a3f-ac81-ebdb7fd84389/0_2.png")
 
