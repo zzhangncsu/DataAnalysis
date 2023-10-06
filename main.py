@@ -113,6 +113,9 @@ if uploaded_file is not None:
         st.bar_chart(df_prod)
     with tab3:
         st.image("https://cdn.midjourney.com/1eea2b76-9e24-4a3f-ac81-ebdb7fd84389/0_2.png")
-        st.image("https://cdn.midjourney.com/70cfb9b1-c862-41ee-80c8-bab7a5fd9d3f/0_1.png")
+        st.image("https://cdn.midjourney.com/0eed04e8-49da-4b19-9701-460f7824371c/0_0.png")
+        st.image("https://blog.lvhglobal.com/content/images/2018/10/hawaii-sunset-main.png")
+        st.image("https://cdn.midjourney.com/608bee51-598d-48bb-a6ac-3276c41b0f7c/0_1.png")
+
 
 
