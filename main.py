@@ -75,7 +75,10 @@ if uploaded_file is not None:
                             count += 1
                 document.add_paragraph()
 
-        document.add_paragraph("^(*￣(oo)￣)^")
+        p = document.add_paragraph()
+        run = p.add_run("喜欢你 兔兔")
+        font = run.font
+        font.color.rgb = RGBColor(220, 220, 220)
 
         file_stream = io.BytesIO()
         document.save(file_stream)
