@@ -287,8 +287,9 @@ if uploaded_file is not None:
         </div>
         <div class="card">
         <div class="info">
-        <h3 class="title">10/30 周一 可爱岛 君悦</h3>
+        <h3 class="title">10/30 周一 可爱岛 君悦 DeHome Workshop Started!</h3>
         <p><br><img src="https://raw.githubusercontent.com/zzhangncsu/DataAnalysis/main/4.jpg"  height="250"></p>
+        <p><br><img src="https://raw.githubusercontent.com/zzhangncsu/DataAnalysis/main/dehome.png"  height="250"></p>
         </div>
         </div>
         <div class="card">
