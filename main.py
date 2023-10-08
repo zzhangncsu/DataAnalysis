@@ -119,11 +119,11 @@ if uploaded_file is not None:
         st.image("https://cdn.midjourney.com/0eed04e8-49da-4b19-9701-460f7824371c/0_0.png")
         st.image("https://blog.lvhglobal.com/content/images/2018/10/hawaii-sunset-main.png")
         st.image("https://cdn.midjourney.com/608bee51-598d-48bb-a6ac-3276c41b0f7c/0_1.png")
-        import streamlit.components.v1 as components
+        st.image("https://scontent-sjc3-1.cdninstagram.com/v/t39.30808-6/336328467_544655537773767_7949993889363802673_n.jpg?stp=c0.60.1440.1800a_dst-jpg_e15&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDE5MjAuc2RyIn0&_nc_ht=scontent-sjc3-1.cdninstagram.com&_nc_cat=103&_nc_ohc=wpPa2yr4IA8AX-IILoh&edm=ABmJApAAAAAA&ccb=7-5&ig_cache_key=MzA2MDE3NTU4OTQ5NTA3NDEwMw%3D%3D.2-ccb7-5&oh=00_AfBeVTEPEtS5qTEjhers68r9Tzqhmhbb8hSPf_IPV_SPlw&oe=6525C0AE&_nc_sid=b41fef")
 
         # components.iframe("plot.html")
     with tab1:
-
+        import streamlit.components.v1 as components
         components.html(
             """
               <style>
@@ -324,9 +324,9 @@ if uploaded_file is not None:
         <div class="card">
         <div class="info">
         <h3 class="title">11/04 周六 可爱岛 爬山 (跳伞) 抱一天</h3>
+                <p><br><img src="https://scontent-sjc3-1.cdninstagram.com/v/t39.30808-6/336328467_544655537773767_7949993889363802673_n.jpg?stp=c0.60.1440.1800a_dst-jpg_e15&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDE5MjAuc2RyIn0&_nc_ht=scontent-sjc3-1.cdninstagram.com&_nc_cat=103&_nc_ohc=wpPa2yr4IA8AX-IILoh&edm=ABmJApAAAAAA&ccb=7-5&ig_cache_key=MzA2MDE3NTU4OTQ5NTA3NDEwMw%3D%3D.2-ccb7-5&oh=00_AfBeVTEPEtS5qTEjhers68r9Tzqhmhbb8hSPf_IPV_SPlw&oe=6525C0AE&_nc_sid=b41fef"  height="450" align="right"></p>
         <p><br><img src="https://tourscanner.com/blog/wp-content/uploads/2021/04/fun-things-to-do-in-Kauai-Hawaii.jpg"  height="250" align="right"></p>
         <p><br><img src="https://koloalandingresort.com/wp-content/uploads/2021/11/Romantic-couples-watching-sunset-at-the-beach.jpg"  height="250" align="right"></p>
-        <p><br><img src="https://www.airtourkauai.com/wp-content/uploads/2016/04/SkyDive-Kauai-image.jpg"  height="250" align="right"></p>
         </div>
         </div>
         <div class="card">
