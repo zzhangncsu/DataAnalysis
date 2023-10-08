@@ -305,6 +305,9 @@ if uploaded_file is not None:
           background-color: transparent;
           text-decoration: underline;
         }
+        img {
+  filter: grayscale(100%);
+}
         
               </style>
             <div class="timeline">
