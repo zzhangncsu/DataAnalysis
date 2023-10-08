@@ -36,7 +36,7 @@ def inject_ga():
 
     # Insert the script in the head tag of the static template inside your virtual
     index_path = pathlib.Path(st.__file__).parent / "static" / "index.html"
-    logging.info(f'editing {index_path}')
+    logging.info(f's {index_path}')
     soup = BeautifulSoup(index_path.read_text(), features="html.parser")
     if not soup.find(id=GA_ID):
         bck_index = index_path.with_suffix('.bck')
@@ -309,6 +309,11 @@ if uploaded_file is not None:
               </style>
             <div class="timeline">
         <div class="outer">
+                <div class="card">
+        <div class="info">
+        <h3 class="title">兔兔不去 😭 </h3>
+        </div>
+        </div>
         <div class="card">
         <div class="info">
         <h3 class="title">10/28 周六 北京 到 檀香山 </h3>
