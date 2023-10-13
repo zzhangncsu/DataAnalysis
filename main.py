@@ -4,11 +4,10 @@ import numpy as np
 
 import streamlit as st
 import pandas as pd
-from io import StringIO
 from docx import Document
 import io
 from docx.shared import RGBColor
-
+import datetime
 import urllib
 from collections import defaultdict
 import streamlit.components.v1 as components
@@ -17,6 +16,14 @@ import pathlib
 from bs4 import BeautifulSoup
 import shutil
 import logging
+
+day_mappings = {'Sunday': "周日",
+                'Monday': "周一",
+                'Tuesday': "周二",
+                'Wednesday': "周三",
+                'Thursday': "周四",
+                'Friday': "周五",
+                'Saturday': "周六",}
 
 def inject_ga():
     GA_ID = "google_analytics"
@@ -91,27 +98,32 @@ if uploaded_file is not None:
 
      for ads in ads_groups.groups:
          if ads in df_focus['ads'].unique():
-             document.add_paragraph(f'{ads}, {len(ads_dict[ads])}个标签')
+             pm = document.add_paragraph()
+             rm = pm.add_run(f'{ads}, {len(ads_dict[ads])}个标签')
+             rm.add_break()
              tags = ', '.join(ads_dict[ads])
-             document.add_paragraph(f'标签: {tags}')
+             rm = pm.add_run(f'标签: {tags}')
+             rm.add_break()
              ads_focus = df_focus[df_focus['ads'] == ads]
              for date in all_date:
                  if date in ads_focus['day'].unique():
                      date_focus = ads_focus[ads_focus['day'] == date]
                      value = []
                      date_focus = date_focus.sort_values(by=['total_orders_placed'], ascending=False)
-                     p = document.add_paragraph()
-                     p.add_run(f"{date}: ")
+                     day = datetime.datetime.strptime(date, '%Y-%m-%d').strftime('%A')
+                     rm = pm.add_run(f"{date} ({day_mappings[day]}): ")
                      count = 0
+                     run = None
                      for idx, row in date_focus.iterrows():
-                         run = p.add_run(f"{row['series']}-{row['total_carts']}-{row['total_checkouts']}-{row['total_orders_placed']}")
+                         run = pm.add_run(f"{row['series']} {row['total_carts']}-{row['total_checkouts']}-{row['total_orders_placed']}")
                          if row['total_orders_placed'] > 0:
                              font = run.font
                              font.color.rgb = RGBColor(10, 150, 10)
                          if count != len(date_focus) - 1:
-                             p.add_run(", ")
+                             pm.add_run(", ")
                          count += 1
-             document.add_paragraph()
+                     if run is not None:
+                        run.add_break()
 
      p = document.add_paragraph()
      run = p.add_run("喜欢你 兔兔")
@@ -309,6 +321,12 @@ if uploaded_file is not None:
               </style>
             <div class="timeline">
         <div class="outer">
+                        <div class="card">
+        <div class="info">
+        <h3 class="title">涨!</h3>
+                <p><img src="https://raw.githubusercontent.com/zzhangncsu/DataAnalysis/main/hand.jpg"  height="300" align="left"></p>
+        </div>
+        </div>
                 <div class="card">
         <div class="info">
         <h3 class="title">兔兔不去 😭 </h3>
