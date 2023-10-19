@@ -321,10 +321,16 @@ if uploaded_file is not None:
               </style>
             <div class="timeline">
         <div class="outer">
+                                <div class="card">
+        <div class="info">
+        <h3 class="title">Oct 19, 2023 星期四 南充</h3>
+                <p><img src="https://cdn.midjourney.com/9aac7f61-ab3c-40b3-bc5d-374366a89aea/0_0.png"  height="500" align="left"></p>
+        </div>
+        </div>
                         <div class="card">
         <div class="info">
         <h3 class="title">涨!</h3>
-                <p><img src="https://raw.githubusercontent.com/zzhangncsu/DataAnalysis/main/hand.jpg"  height="300" align="left"></p>
+                <p><img src="https://raw.githubusercontent.com/zzhangncsu/DataAnalysis/main/hand.jpg"  height="300" align="right"></p>
         </div>
         </div>
                 <div class="card">
