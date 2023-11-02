@@ -91,7 +91,7 @@ if uploaded_file is not None:
  for ads in ads_groups.groups:
      ads_dict[ads] = ads_groups.get_group(ads)['series'].unique()
 
- tab1, tab2, tab3, tab4 = st.tabs(["🐰", "文档", "统计", "图标"])
+ tab1, tab2, tab3, tab4, tab5 = st.tabs(["🐰", "文档", "统计", "图标", "SHEIN"])
  with tab2:
      document = Document()
      document.add_heading('数据', 0)
@@ -412,5 +412,14 @@ if uploaded_file is not None:
             """,
             height=6000,
         )
+ with tab5:
+     for i in range(1, 3):  # number of rows in your table! = 2
+         cols = st.columns(2)  # number of columns in each row! = 2
+         # first column of the ith row
+         cols[0].image('https://img.ltwebstatic.com/images3_pi/2022/11/09/1667956033f018e19f336726fe58a8a9c57df2f458_thumbnail_405x552.jpg', use_column_width=True)
+         cols[0].text("sss")
+         cols[1].image('https://img.ltwebstatic.com/images3_pi/2022/11/09/1667956033f018e19f336726fe58a8a9c57df2f458_thumbnail_405x552.jpg', use_column_width=True)
+         cols[1].text("aaa")
+
 
 
