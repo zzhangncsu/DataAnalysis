@@ -18,6 +18,9 @@ from bs4 import BeautifulSoup
 import shutil
 import logging
 
+if 'key' not in st.session_state:
+    st.session_state['key'] = 'value'
+
 day_mappings = {'Sunday': "周日",
                 'Monday': "周一",
                 'Tuesday': "周二",
@@ -421,52 +424,53 @@ if uploaded_file is not None:
         )
     with tab5:
         url = st.text_input(
-            "Enter URL",
-            label_visibility=st.session_state.visibility,
-            disabled=st.session_state.disabled,
-            placeholder=st.session_state.placeholder,
+            "Enter URL"
         )
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/39.0.2171.95 Safari/537.36'}
-        r = requests.get(url, headers=headers)
-        soup = BeautifulSoup(r.text, "html.parser")
-        sections = []
-        for i in range(30):
-            link = f"S-product-item j-expose__product-item recent_view_item_expose-{i} product-list__item"
-            sections.append(soup.find_all("section", {"class": link})[0]["aria-label"])
-        images = []
-        for i in range(30):
-            images.append(
-                "https://" + soup.find_all("div", {"class": "crop-image-container"})[i]["data-before-crop-src"].replace(
-                    "//", ""))
-        html = """
-        <style>
-        div.gallery {
-          margin: 5px;
-          border: 1px solid #ccc;
-          float: left;
-          width: 180px;
-        }
-        
-        div.gallery:hover {
-          border: 1px solid #777;
-        }
-        
-        div.gallery img {
-          width: 100%;
-          height: auto;
-        }
-        
-        div.desc {
-          padding: 15px;
-          text-align: center;
-        }
-        </style>
-        
-        """
-        for img_url, text in zip(images, sections):
-            html += f"""<div class ="gallery"> <img src="{img_url}" width="400"> <div class="desc">{text}</div></div>"""
+        if url:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) '
+                              'Chrome/39.0.2171.95 Safari/537.36'}
+            r = requests.get(url, headers=headers)
+            soup = BeautifulSoup(r.text, "html.parser")
+            sections = []
+            for i in range(30):
+                link = f"S-product-item j-expose__product-item recent_view_item_expose-{i} product-list__item"
+                sections.append(soup.find_all("section", {"class": link})[0]["aria-label"])
+            images = []
+            for i in range(30):
+                images.append(
+                    "https://" + soup.find_all("div", {"class": "crop-image-container"})[i]["data-before-crop-src"].replace(
+                        "//", ""))
+            html = """
+            <style>
+            div.gallery {
+              margin: 5px;
+              border: 1px solid #ccc;
+              float: left;
+              width: 180px;
+            }
+            
+            div.gallery:hover {
+              border: 1px solid #777;
+            }
+            
+            div.gallery img {
+              width: 100%;
+              height: auto;
+            }
+            
+            div.desc {
+              padding: 15px;
+              text-align: center;
+              color: white;
+            }
+            </style>
+            
+            """
+            for img_url, text in zip(images, sections):
+                html += f"""<div class ="gallery"> <img src="{img_url}" width="400"> <div class="desc">{text}</div></div>"""
 
-        components.html(html)
+            components.html(html,
+            height=4000,
+        )
 
