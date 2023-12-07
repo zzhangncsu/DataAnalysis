@@ -71,7 +71,7 @@ def getAdsSeries(text):
 
 
 #
-inject_ga()
+# inject_ga()
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
